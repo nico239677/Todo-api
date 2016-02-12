@@ -60,12 +60,17 @@ app.post('/todos', function (req, res) {
 });
 
 // Delete /todos/:id
-app.delete('todos/:id', function (req, res) {
+app.delete('/todos/:id', function (req, res) {
     var todoId = parseInt(req.params.id, 10);
     var matchedTodo = _.findWhere(todos, {id: todoId});
-    _.without([todos], matchedTodo);
     
-    res.json(todos);
+    if (!matchedTodo) {
+        res.status(404).json("Error");
+    } else {
+    todos = _.without(todos, matchedTodo);
+    res.json(matchedTodo);    
+    }
+    
 })
 
 
